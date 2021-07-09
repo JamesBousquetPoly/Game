@@ -5,17 +5,32 @@ using UnityEngine;
 public class Resource : MonoBehaviour
 {
     [SerializeField] Sprite TreeSprite;
+    [SerializeField] Sprite StoneSprite;
+    RESOURCE_TYPE type;
     private int hitPoints = 4;
     // Start is called before the first frame update
     void Start()
     {
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = TreeSprite;
+        int rand = Random.Range(0,2);
+        type = (RESOURCE_TYPE)rand;
+        print("type: " + type);
+        switch (type)
+        {
+            case RESOURCE_TYPE.STONE:
+                LoadStone();
+                break;
+            case RESOURCE_TYPE.WOOD:
+                LoadWood();
+                break;
+        }
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void getHit()
@@ -53,10 +68,22 @@ public class Resource : MonoBehaviour
         }
     }
 
+    private void LoadWood()
+    {
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = TreeSprite;
+    }
+
+    private void LoadStone()
+    {
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = StoneSprite;
+    }
+    
+
 
 
     enum RESOURCE_TYPE
     {
-        WOOD
+        WOOD,
+        STONE
     }
 }
