@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Resource : MonoBehaviour
 {
-    [SerializeField] Sprite TreeSprite;
-    [SerializeField] Sprite StoneSprite;
+    [SerializeField] ResourceSO TreeSO;
+    [SerializeField] ResourceSO RockSO;
+    private ResourceSO currentResource;
     RESOURCE_TYPE type;
     private int hitPoints = 4;
     // Start is called before the first frame update
@@ -14,17 +15,20 @@ public class Resource : MonoBehaviour
         int rand = Random.Range(0,2);
         type = (RESOURCE_TYPE)rand;
         print("type: " + type);
+        
         switch (type)
         {
             case RESOURCE_TYPE.STONE:
-                LoadStone();
+                currentResource = RockSO;
                 break;
             case RESOURCE_TYPE.WOOD:
-                LoadWood();
+                currentResource = TreeSO;
                 break;
         }
+        LoadResource();
+        this.gameObject.GetComponent<SpriteRenderer>().sprite = currentResource.sprite;
 
-        
+
     }
 
     // Update is called once per frame
@@ -33,34 +37,41 @@ public class Resource : MonoBehaviour
 
     }
 
-    public void getHit()
+    private void getHit()
     {
         hitPoints--;
     }
 
-    public void getHit(int hit)
+    private void getHit(int hit)
     {
         hitPoints -= hit;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && currentResource.shouldFadeWhenClose)
         {
             Color color = this.gameObject.GetComponent<SpriteRenderer>().color;
             color.a = 0.5f;
             this.gameObject.GetComponent<SpriteRenderer>().color = color;
         }
 
-/*        if (collision.gameObject.CompareTag("Tool"))
+        if (collision.gameObject.CompareTag("Tool"))
         {
-            collision.gameObject.GetComponent<Tool>();
-        }*/
+            if(collision.gameObject.GetComponent<Tool>().toolType == currentResource.correspondingTool) // TODO: should this logic be here? I don't think so but I will examine later
+            {
+                getHit();
+                if(hitPoints <= 0)
+                {
+                    DropResource();
+                }
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && currentResource.shouldFadeWhenClose)
         {
             Color color = this.gameObject.GetComponent<SpriteRenderer>().color;
             color.a = 1f;
@@ -70,12 +81,24 @@ public class Resource : MonoBehaviour
 
     private void LoadWood()
     {
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = TreeSprite;
+        currentResource = TreeSO;
+        this.gameObject.transform.localScale = currentResource.scale;
     }
 
     private void LoadStone()
     {
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = StoneSprite;
+        currentResource = RockSO;
+    }
+
+    // loads resource once scriptable object has been assigned
+    private void LoadResource()
+    {
+        this.gameObject.transform.localScale = currentResource.scale;
+    }
+
+    private void DropResource()
+    {
+
     }
     
 

@@ -10309,6 +10309,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 751261802, guid: 5d565e8c7486e5245ba4b2722419235e, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 74164116067003846, guid: 5d565e8c7486e5245ba4b2722419235e, type: 3}
+      propertyPath: RockSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 56f1ae1a89d13ce47b7c88629b218763, type: 2}
+    - target: {fileID: 74164116067003846, guid: 5d565e8c7486e5245ba4b2722419235e, type: 3}
+      propertyPath: TreeSO
+      value: 
+      objectReference: {fileID: 11400000, guid: df6e8b58612a5404cb571bcea88c60d0, type: 2}
+    - target: {fileID: 74164116067003846, guid: 5d565e8c7486e5245ba4b2722419235e, type: 3}
+      propertyPath: StoneSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d8b6ffee56371254daad3853e1c04322, type: 3}
     - target: {fileID: 74164116067003850, guid: 5d565e8c7486e5245ba4b2722419235e, type: 3}
       propertyPath: m_RootOrder
       value: 15

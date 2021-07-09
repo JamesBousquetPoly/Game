@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tool : MonoBehaviour
 {
+
+    public ToolType toolType;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +16,12 @@ public class Tool : MonoBehaviour
     void Update()
     {
         
+    }
+
+    [HideInInspector] public enum ToolType
+    {
+        Pickaxe,
+        Axe,
+        FishingPole
     }
 }
