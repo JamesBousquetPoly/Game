@@ -8,13 +8,13 @@ public class Resource : MonoBehaviour
     [SerializeField] ResourceSO RockSO;
     private ResourceSO currentResource;
     RESOURCE_TYPE type;
-    private int hitPoints = 4;
+    private int hitPoints;
+    private int amountResourceDrop;
     // Start is called before the first frame update
     void Start()
     {
         int rand = Random.Range(0,2);
         type = (RESOURCE_TYPE)rand;
-        print("type: " + type);
         
         switch (type)
         {
@@ -37,14 +37,22 @@ public class Resource : MonoBehaviour
 
     }
 
-    private void getHit()
+    public void getHit()
     {
         hitPoints--;
+        if (hitPoints <= 0)
+        {
+            DestroyResource();
+        }
     }
 
-    private void getHit(int hit)
+    public void getHit(int hit)
     {
         hitPoints -= hit;
+        if (hitPoints <= 0)
+        {
+            DestroyResource();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -54,18 +62,6 @@ public class Resource : MonoBehaviour
             Color color = this.gameObject.GetComponent<SpriteRenderer>().color;
             color.a = 0.5f;
             this.gameObject.GetComponent<SpriteRenderer>().color = color;
-        }
-
-        if (collision.gameObject.CompareTag("Tool"))
-        {
-            if(collision.gameObject.GetComponent<Tool>().toolType == currentResource.correspondingTool) // TODO: should this logic be here? I don't think so but I will examine later
-            {
-                getHit();
-                if(hitPoints <= 0)
-                {
-                    DropResource();
-                }
-            }
         }
     }
 
@@ -94,11 +90,19 @@ public class Resource : MonoBehaviour
     private void LoadResource()
     {
         this.gameObject.transform.localScale = currentResource.scale;
+        hitPoints = currentResource.hitPoints;
+        amountResourceDrop = Random.Range(currentResource.minDropAmount, currentResource.maxDropAmount + 1);
     }
 
-    private void DropResource()
+    private void DestroyResource()
     {
+        this.gameObject.GetComponent<LootDrop>().DropLoot();
+        Destroy(this.gameObject);
+    }
 
+    public ResourceSO GetCurrentResource()
+    {
+        return currentResource;
     }
     
 

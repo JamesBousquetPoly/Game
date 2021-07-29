@@ -118,22 +118,52 @@ public class Weapon : MonoBehaviour
 
         bool higherThanPositiveSlopeLine = HigherThanPositiveSlopeLine(Input.mousePosition);
         bool higherThanNegativeSlopeLine = HigherThanNegativeSlopeLine(Input.mousePosition);
+        Quadrant retval = Quadrant.South;
 
         if(!higherThanPositiveSlopeLine && higherThanNegativeSlopeLine)
         {
-            return Quadrant.East;
+            retval =  Quadrant.East;
         } else if (!higherThanPositiveSlopeLine && !higherThanNegativeSlopeLine)
         {
-            return Quadrant.South;
+            retval =  Quadrant.South;
         }
         else if (higherThanPositiveSlopeLine && !higherThanNegativeSlopeLine)
         {
-            return Quadrant.West;
+            retval = Quadrant.West;
         }
         else
         {
-            return Quadrant.North;
+            retval =  Quadrant.North;
         }
+        return retval;
+    }
+
+    public Quadrant GetRelativeQuadrant(Transform inputTransform) // TODO: this should not be done here but would take a long time to refactor
+    {
+        Vector2 mousePosition = inputTransform.position;
+        Vector2 playerPosition = transform.position;
+
+        bool higherThanPositiveSlopeLine = HigherThanPositiveSlopeLine(inputTransform.position);
+        bool higherThanNegativeSlopeLine = HigherThanNegativeSlopeLine(inputTransform.position);
+        Quadrant retval = Quadrant.South;
+
+        if (!higherThanPositiveSlopeLine && higherThanNegativeSlopeLine)
+        {
+            retval = Quadrant.East;
+        }
+        else if (!higherThanPositiveSlopeLine && !higherThanNegativeSlopeLine)
+        {
+            retval = Quadrant.South;
+        }
+        else if (higherThanPositiveSlopeLine && !higherThanNegativeSlopeLine)
+        {
+            retval = Quadrant.West;
+        }
+        else
+        {
+            retval = Quadrant.North;
+        }
+        return retval;
     }
 
     void UpdateState()
@@ -170,7 +200,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    enum Quadrant
+    [HideInInspector] public enum Quadrant
     {
         East,
         South,

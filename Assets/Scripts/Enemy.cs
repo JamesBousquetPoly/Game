@@ -36,6 +36,12 @@ public class Enemy : Character
         hitPoints = startingHitPoints;
     }
 
+    public override void KillCharacter()
+    {
+        this.gameObject.GetComponent<LootDrop>().DropLoot();
+        Destroy(gameObject);
+    }
+
     private void OnEnable()
     {
         ResetCharacter();

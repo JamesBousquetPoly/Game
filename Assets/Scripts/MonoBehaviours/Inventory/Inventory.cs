@@ -43,7 +43,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public bool AddItem(Item itemToAdd)
+    public bool AddItem(Item itemToAdd, int quantity)
     {
         if(itemToAdd.sprite == null)
         {
@@ -57,8 +57,8 @@ public class Inventory : MonoBehaviour
             {
                 // add to existing slot
 
-                // add 1 to current quantity
-                items[i].quantity = items[i].quantity + 1;
+                // add to current quantity
+                items[i].quantity = items[i].quantity + quantity;
 
                 // Update text
                 Slot slotScript = slots[i].gameObject.GetComponent<Slot>();
@@ -74,7 +74,14 @@ public class Inventory : MonoBehaviour
 
                 // add item and set picture (do not add text if just one quantity of item)
                 items[i] = Instantiate(itemToAdd); // must instantiate copy because otherwise modifying base object
-                items[i].quantity = 1;
+                items[i].quantity = quantity;
+                if(items[i].quantity > 1)
+                {
+                    Slot slotScript = slots[i].gameObject.GetComponent<Slot>();
+                    Text quantityText = slotScript.qtyText;
+                    quantityText.enabled = true;
+                    quantityText.text = items[i].quantity.ToString();
+                }
                 if(itemImages[i] == null)
                 {
                     print("itemImages[i] null");

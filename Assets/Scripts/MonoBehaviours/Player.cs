@@ -13,33 +13,40 @@ public class Player : Character
     Inventory inventory;
     public void Start()
     {
-        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("CanBePickedUp"))
         {
-            Item hitObject = collision.gameObject.GetComponent<Consumable>().item;
-            if(hitObject != null)
+            RetrievableItem itemToPickUp = collision.gameObject.GetComponent<RetrievableItem>();
+            Item hitObject = itemToPickUp.getItem();
+            
+
+            if((hitObject != null) && (!itemToPickUp.getIsPickedUp()))
             {
+                itemToPickUp.setIsPickedUp(true);
                 bool shouldDisappear = false;
-                switch (hitObject.itemType)
+                switch (hitObject.itemType) // should eventually remove switch, remenent from book code
                 {
                     case Item.ItemType.COIN:
-                        shouldDisappear = inventory.AddItem(hitObject);
+                        shouldDisappear = inventory.AddItem(hitObject, itemToPickUp.quantity); //TODO This is where I add an item
                         break;
                     case Item.ItemType.HEALTH:
                         shouldDisappear = AdjustHitPoints(hitObject.quantity);
                         break;
                     default:
+                        shouldDisappear = inventory.AddItem(hitObject, itemToPickUp.quantity); //TODO This is where I add an item
                         break;
                 }
                 if (shouldDisappear)
                 {
                     collision.gameObject.SetActive(false);
+                } else
+                {
+                    itemToPickUp.setIsPickedUp(false);
                 }
-                
+
             }
             
         }
@@ -50,7 +57,6 @@ public class Player : Character
         if(hitPoints.value < maxHitPoints)
         {
             hitPoints.value = hitPoints.value + amount;
-            print("Adjusted hitpoints by: " + amount + ". New value: " + hitPoints.value);
             return true;
         }
         return false;

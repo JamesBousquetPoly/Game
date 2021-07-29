@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 74164116067003847}
   - component: {fileID: 74164116067003848}
   - component: {fileID: 751261802}
+  - component: {fileID: 74164115425510849}
   m_Layer: 9
   m_Name: Resource
-  m_TagString: Untagged
+  m_TagString: Resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86d4bed490f164b4b9bf1f4905ad6815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TreeSprite: {fileID: 21300000, guid: 7a361bdf17f77e34394b3d43d2e006a0, type: 3}
+  TreeSO: {fileID: 11400000, guid: df6e8b58612a5404cb571bcea88c60d0, type: 2}
+  RockSO: {fileID: 11400000, guid: 56f1ae1a89d13ce47b7c88629b218763, type: 2}
 --- !u!212 &74164116067003847
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -138,6 +140,20 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.011226706, y: -0.40883526}
+  m_Offset: {x: -0.011226706, y: -0.3}
   serializedVersion: 2
   m_Radius: 0.19093014
+--- !u!114 &74164115425510849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74164116067003851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 232bb211c693eaa4192b6b3eef00e436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootTable: {fileID: 11400000, guid: 1a539a1b86fad694f9a4c57f21bdc15f, type: 2}
+  retrievableItemPrefab: {fileID: 444993709163757630, guid: a79b2f8a592a75f4d9f599d41dd4eb85, type: 3}

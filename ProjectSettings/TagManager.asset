@@ -8,6 +8,8 @@ TagManager:
   - CanBePickedUp
   - VirtualCamera
   - Scenery
+  - Tool
+  - Resource
   layers:
   - Default
   - TransparentFX

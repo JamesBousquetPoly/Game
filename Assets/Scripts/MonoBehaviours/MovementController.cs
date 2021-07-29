@@ -10,6 +10,7 @@ public class MovementController : MonoBehaviour
     Vector2 movement = new Vector2();
     Rigidbody2D rb2D;
     Animator animator;
+    Weapon.Quadrant facing;
 
     
 
@@ -23,6 +24,22 @@ public class MovementController : MonoBehaviour
     void Update()
     {
         UpdateState();
+        if (Input.GetKeyDown("d"))
+        {
+            facing = Weapon.Quadrant.East;
+        }
+        else if (Input.GetKeyDown("a"))
+        {
+            facing = Weapon.Quadrant.West;
+        }
+        else if (Input.GetKeyDown("w"))
+        {
+            facing = Weapon.Quadrant.North;
+        }
+        else if(Input.GetKeyDown("s"))
+        {
+            facing = Weapon.Quadrant.South;
+        }
     }
 
     private void FixedUpdate()
@@ -50,6 +67,11 @@ public class MovementController : MonoBehaviour
         }
         animator.SetFloat("xDir", movement.x);
         animator.SetFloat("yDir", movement.y);
+    }
+
+    public Weapon.Quadrant GetFacing()
+    {
+        return facing;
     }
 
 

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -1138657286618254693}
   - component: {fileID: 1589555040}
   - component: {fileID: 3517103569435641548}
+  - component: {fileID: 8994929444233941902}
   m_Layer: 10
   m_Name: EnemyObject
   m_TagString: Enemy
@@ -202,3 +203,17 @@ MonoBehaviour:
   wanderSpeed: 0.8
   directionChangeInterval: 3
   followPlayer: 1
+--- !u!114 &8994929444233941902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479116500234926385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 232bb211c693eaa4192b6b3eef00e436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootTable: {fileID: 11400000, guid: 1a539a1b86fad694f9a4c57f21bdc15f, type: 2}
+  retrievableItemPrefab: {fileID: 444993709163757630, guid: a79b2f8a592a75f4d9f599d41dd4eb85, type: 3}
