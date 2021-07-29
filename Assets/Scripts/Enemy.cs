@@ -2,34 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Character
+public class Enemy : Character, IDamagable
 {
     float hitPoints;
+    float maxHealth;
+    float primaryHitInterval = 1.5f;
 
-    public int damageStrength;
+    public float damageStrength;
     Coroutine damageCoroutine;
 
-    // Damage done TO the enemy
-    public override IEnumerator DamageCharacter(int damage, float interval)
-    {
-        while (true)
-        {
-            StartCoroutine(FlickerCharacter());
-            hitPoints = hitPoints - damage;
-            if(hitPoints <= float.Epsilon) // see below comment
-            {
-                KillCharacter();
-                break;
-            }
-            if(interval > float.Epsilon) // float.Epsilon is smallest possible value greater than 0, do this because floats are prone to errors
-            {
-                yield return new WaitForSeconds(interval);
-            } else
-            {
-                break;
-            }
-        }
-    }
 
     public override void ResetCharacter()
     {
@@ -52,10 +33,11 @@ public class Enemy : Character
         if (collision.gameObject.CompareTag("Player"))
         {
             Player player = collision.gameObject.GetComponent<Player>();
-            if(damageCoroutine == null)
+            if (damageCoroutine == null) 
             {
-                damageCoroutine = StartCoroutine(player.DamageCharacter(damageStrength, 1.0f));
+                damageCoroutine = StartCoroutine(DealDamageToPlayer(primaryHitInterval, player)); // TODO: Need to parameterize the 1.5f interval. 
             }
+
         }
 
     }
@@ -64,13 +46,48 @@ public class Enemy : Character
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            
             if (damageCoroutine != null)
             {
                 StopCoroutine(damageCoroutine);
                 damageCoroutine = null;
             }
-        }
+        }  
+    }
 
-        
+    private IEnumerator DealDamageToPlayer(float interval, Player player)
+    {
+        while (true)
+        {
+            player.DealDamage(damageStrength);
+            if (interval > float.Epsilon)
+            {
+                yield return new WaitForSeconds(interval);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    public void DealDamage(float damage)
+    {
+        StartCoroutine(FlickerCharacter());
+        hitPoints -= damage;
+        if (hitPoints <= float.Epsilon)
+        {
+            KillCharacter();
+        }
+    }
+    public void HealDamage(float heal)
+    {
+        if((hitPoints + heal) <= maxHealth)
+        {
+            hitPoints += heal;
+        } else
+        {
+            hitPoints = maxHealth;
+        }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Character
+public class Player : Character, IDamagable
 {
     public HealthBar healthBarPrefab;
     HealthBar healthBar;
@@ -33,7 +33,7 @@ public class Player : Character
                         shouldDisappear = inventory.AddItem(hitObject, itemToPickUp.quantity); //TODO This is where I add an item
                         break;
                     case Item.ItemType.HEALTH:
-                        shouldDisappear = AdjustHitPoints(hitObject.quantity);
+                        //shouldDisappear = AdjustHitPoints(hitObject.quantity);
                         break;
                     default:
                         shouldDisappear = inventory.AddItem(hitObject, itemToPickUp.quantity); //TODO This is where I add an item
@@ -52,36 +52,16 @@ public class Player : Character
         }
     }
 
-    public bool AdjustHitPoints(int amount)
+    public void HealDamage(float amount)
     {
-        if(hitPoints.value < maxHitPoints)
+        if((hitPoints.value + amount) < maxHitPoints)
         {
             hitPoints.value = hitPoints.value + amount;
-            return true;
-        }
-        return false;
-        
-    }
-
-    public override IEnumerator DamageCharacter(int damage, float interval)
-    {
-        while (true)
+        } else
         {
-            StartCoroutine(FlickerCharacter());
-            hitPoints.value = hitPoints.value - damage;
-            if(hitPoints.value <= float.Epsilon)
-            {
-                KillCharacter();
-                break;
-            }
-            if(interval > float.Epsilon)
-            {
-                yield return new WaitForSeconds(interval);
-            } else
-            {
-                break;
-            }
+            hitPoints.value = maxHitPoints;
         }
+        
     }
 
     public override void KillCharacter()
@@ -104,5 +84,20 @@ public class Player : Character
     {
         ResetCharacter();
     }
+
+    public void DealDamage(float damage)
+    {
+        StartCoroutine(FlickerCharacter());
+        if (hitPoints.value - damage > float.Epsilon)
+        {
+            hitPoints.value -= damage;
+        } else
+        {
+            KillCharacter();
+        }
+
+    }
+
+
 
 }
